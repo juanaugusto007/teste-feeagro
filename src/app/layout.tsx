@@ -22,13 +22,13 @@ export default function RootLayout({
       <body className={`${inter.className} min-h-screen bg-background flex flex-col md:flex-row`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="light"
+          enableSystem={false}
           disableTransitionOnChange
         >
           <LanguageProvider>
             <Sidebar />
-            <main className="flex-1 p-4 pt-20 md:p-8 md:pt-8 overflow-y-auto h-screen w-full">
+            <main className="flex-1 p-4 pt-20 md:p-8 md:pt-8 md:ml-64 overflow-y-auto h-screen w-auto border-none">
               <div className="max-w-6xl mx-auto space-y-8 pb-10">
                 {children}
               </div>

@@ -9,7 +9,8 @@ export const dictionary = {
             newOperation: 'Nova Operação',
             settings: 'Configurações',
             farmName: 'Fazenda Santa Maria',
-            logout: 'Sair'
+            logout: 'Sair',
+            slogan: 'Investimento digital, Ativo real'
         },
         dashboard: {
             welcome: 'Dashboard',
@@ -79,7 +80,8 @@ export const dictionary = {
             newOperation: 'New Operation',
             settings: 'Settings',
             farmName: 'Santa Maria Farm',
-            logout: 'Logout'
+            logout: 'Logout',
+            slogan: 'Digital Investment, Real Asset'
         },
         dashboard: {
             welcome: 'Dashboard',

@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { OperationFormValues, operationSchema } from "@/lib/validations";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PiCheckCircle, PiSpinner, PiArrowRight } from "react-icons/pi";
 import { RWAPortfolioItem } from "@/types";
 import { transactionService } from "@/services/transactionService";
@@ -29,8 +29,19 @@ export function NewOperationForm({ portfolio }: NewOperationFormProps) {
         },
     });
 
-    const { register, handleSubmit, watch, formState: { errors } } = form;
+    const { register, handleSubmit, watch, setValue, formState: { errors } } = form; // Added setValue
     const type = watch('type');
+    const assetId = watch('assetId'); // Watch asset selection
+
+    // Auto-fill amount when asset is selected
+    useEffect(() => {
+        if (type === 'INVESTMENT' && assetId) {
+            const selectedAsset = portfolio.find(p => p.id === assetId);
+            if (selectedAsset) {
+                setValue('amount', selectedAsset.price);
+            }
+        }
+    }, [assetId, type, portfolio, setValue]);
 
     const onSubmit = async (data: OperationFormValues) => {
         setIsSubmitting(true);

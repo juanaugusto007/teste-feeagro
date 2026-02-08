@@ -1,6 +1,5 @@
 # FeeAgro - Dashboard Técnico
 
-Bem-vindo ao repositório do teste técnico para Frontend Senior na FeeAgro.
 Este projeto simula um recorte realista de um WebApp Banking/Web3 focado em Ativos Reais (RWA).
 
 ## 🚀 Como Rodar
@@ -20,12 +19,13 @@ Este projeto simula um recorte realista de um WebApp Banking/Web3 focado em Ativ
 
 ## 🛠️ Stack Tecnológica
 
--   **Next.js 14+ (App Router):** Framework React moderno para SSR/SSG e otimização.
+-   **Next.js 16+ (App Router + Turbopack):** Framework React moderno para SSR/SSG e otimização extrema.
 -   **TypeScript:** Segurança de tipagem e manutenibilidade.
--   **Tailwind CSS:** Estilização utility-first, rápida e consistente.
--   **Lucide React:** Ícones leves e consistentes.
+-   **Tailwind CSS v4:** Estilização utility-first de última geração, com suporte nativo a variáveis CSS via `@theme`.
+-   **Lucide React & React Icons:** Ícones leves e consistentes (Phosphor Icons).
 -   **Recharts:** Biblioteca de gráficos flexível para React.
 -   **Zod + React Hook Form:** Validação de formulários robusta e performática.
+-   **Context API (i18n):** Suporte nativo a múltiplos idiomas (PT-BR/EN) implementado via Contexto.
 -   **clsx + tailwind-merge:** Utilitários para gestão dinâmica de classes CSS.
 
 ## 🧠 Decisões e Arquitetura (Senior Refactor)
@@ -45,7 +45,7 @@ Recentemente, o projeto passou por uma refatoração arquitetural para seguir pr
 
 -   **Estética & Domínio RWA:**
     -   Foco em "Patrimônio Tokenizado" e referência a "Sacas de Grãos".
-    -   Design system consistente com identidade visual FeeAgro (Verde/Gold).
+    -   Design system consistente com identidade visual FeeAgro (Verde/Gold), utilizando **Tailwind v4 Variables**.
 
 ## ⚖️ Trade-offs
 -   **Services Mockados:** Optou-se por simular latência no frontend em vez de subir um backend Node.js separado para manter o projeto "standalone" e fácil de rodar (`npm run dev`), mas demonstrando tratamento profissional de assincronismo.
@@ -59,4 +59,3 @@ Recentemente, o projeto passou por uma refatoração arquitetural para seguir pr
 2.  **Autenticação:** Integração real com NextAuth ou provedor Web3 (WalletConnect).
 3.  **Componentes Robustos:** Refinar acessibilidade (ARIA) dos componentes customizados (Dropdowns, Modais).
 4.  **Backend Integration:** Conectar com uma API real (GraphQL ou REST).
-5.  **Internacionalização (i18n):** Suporte completo para Multi-idioma.

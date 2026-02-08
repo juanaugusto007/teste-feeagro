@@ -4,7 +4,7 @@ import { PiSquaresFour, PiArrowsLeftRight, PiPlusCircle, PiSignOut, PiList } fro
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ThemeToggle } from './ThemeToggle';
 import { LanguageToggle } from './LanguageToggle';
 import Image from 'next/image';
@@ -15,6 +15,16 @@ export function Sidebar() {
     const [isOpen, setIsOpen] = useState(false);
     const { t } = useLanguage();
 
+    // Scroll Lock Effect
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => { document.body.style.overflow = 'unset'; };
+    }, [isOpen]);
+
     const menuItems = [
         { label: t.sidebar.dashboard, icon: PiSquaresFour, href: '/' },
         { label: t.sidebar.transactions, icon: PiArrowsLeftRight, href: '/transactions' },
@@ -23,93 +33,93 @@ export function Sidebar() {
 
     return (
         <>
-            {/* Mobile Toggle - Glassy Header */}
-            <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-background/95 backdrop-blur-md border-b z-50 px-4 flex items-center justify-between animate-in slide-in-from-top-2">
-                <div className="flex items-center gap-2">
-                    <div className="relative w-28 h-8">
-                        <Image
-                            src="/feeagro.png"
-                            alt="FeeAgro Logo"
-                            fill
-                            className="object-contain object-left"
-                            priority
-                        />
-                    </div>
-                </div>
-                <button
-                    onClick={() => setIsOpen(!isOpen)}
-                    className="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-colors"
-                    aria-label="Alternar menu lateral"
-                >
-                    <PiList className="w-6 h-6 text-foreground" />
-                </button>
-            </div>
+            {/* Mobile Toggle Button - Flowbite Style */}
+            <button
+                data-drawer-target="default-sidebar"
+                data-drawer-toggle="default-sidebar"
+                aria-controls="default-sidebar"
+                type="button"
+                onClick={() => setIsOpen(!isOpen)}
+                className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-foreground rounded-lg md:hidden hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring"
+            >
+                <span className="sr-only">Open sidebar</span>
+                <PiList className="w-6 h-6" aria-hidden="true" />
+            </button>
 
-            {/* Sidebar Container */}
-            <aside className={cn(
-                "fixed inset-y-0 left-0 z-40 w-72 bg-background/95 backdrop-blur-xl border-r border-border shadow-2xl transform transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:h-screen md:block md:bg-card md:shadow-none",
-                isOpen ? "translate-x-0" : "-translate-x-full",
-                "pt-24 md:pt-0" // Mobile padding
-            )}>
-                <div className="h-full flex flex-col p-6">
-                    {/* Logo (Desktop) */}
-                    <div className="hidden md:flex items-center justify-start mb-12 px-2 mt-4">
-                        <div className="relative w-40 h-10 hover:opacity-90 transition-opacity cursor-pointer">
-                            <Link href="/">
-                                <Image
-                                    src="/feeagro.png"
-                                    alt="FeeAgro Logo"
-                                    fill
-                                    className="object-contain object-left"
-                                    priority
-                                />
-                            </Link>
+            {/* Sidebar Drawer - Flowbite Style Adapted */}
+            <aside
+                id="default-sidebar"
+                className={cn(
+                    "fixed top-0 left-0 z-[100] w-64 h-full transition-transform bg-card text-card-foreground border-r border-border",
+                    isOpen ? "translate-x-0" : "-translate-x-full",
+                    "md:translate-x-0"
+                )}
+                aria-label="Sidebar"
+            >
+                <div className="h-full px-3 py-4 overflow-y-auto bg-card flex flex-col">
+                    {/* Logo Section */}
+                    <Link href="/" className="flex items-center ps-2.5 mb-5">
+                        <div className="relative w-32 h-8">
+                            <Image
+                                src="/feeagro.png"
+                                alt="FeeAgro Logo"
+                                fill
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                className="object-contain object-left"
+                                priority
+                            />
                         </div>
-                    </div>
+                    </Link>
 
-                    <nav className="flex-1 space-y-1">
-                        <p className="px-4 text-xs font-semibold text-muted-foreground/70 uppercase tracking-widest mb-4">
-                            {t.sidebar.dashboard.toUpperCase()} {/* Or generic menu title */}
-                        </p>
+                    {/* Navigation Links */}
+                    <ul className="space-y-2 font-medium flex-1">
                         {menuItems.map((item) => {
                             const isActive = pathname === item.href;
                             return (
-                                <Link
-                                    key={item.href}
-                                    href={item.href}
-                                    onClick={() => setIsOpen(false)}
-                                    className={cn(
-                                        "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 font-medium text-sm",
-                                        isActive
-                                            ? "bg-primary/10 text-primary font-semibold" // Active
-                                            : "text-foreground/80 hover:bg-muted hover:text-foreground" // Inactive - Darker text
-                                    )}
-                                >
-                                    <item.icon className={cn("w-5 h-5", isActive ? "fill-current" : "")} />
-                                    {item.label}
-                                </Link>
+                                <li key={item.href}>
+                                    <Link
+                                        href={item.href}
+                                        onClick={() => setIsOpen(false)}
+                                        className={cn(
+                                            "flex items-center p-2 rounded-lg group transition-colors",
+                                            isActive
+                                                ? "bg-primary/10 text-primary"
+                                                : "text-foreground hover:bg-muted hover:text-foreground"
+                                        )}
+                                    >
+                                        <item.icon
+                                            className={cn(
+                                                "w-5 h-5 transition duration-75",
+                                                isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
+                                            )}
+                                            aria-hidden="true"
+                                        />
+                                        <span className="ms-3">{item.label}</span>
+                                    </Link>
+                                </li>
                             );
                         })}
-                    </nav>
+                    </ul>
 
-                    <div className="mt-auto space-y-4">
-                        <div className="grid grid-cols-2 gap-2 px-1">
-                            <ThemeToggle className="w-full justify-between hover:bg-muted border-none shadow-none" />
-                            <LanguageToggle className="w-full justify-center" />
+                    {/* Footer Actions */}
+                    <div className="mt-auto border-t border-border pt-4 space-y-2">
+                        <div className="flex gap-2 px-1">
+                            <ThemeToggle className="flex-1 justify-center hover:bg-muted border-none shadow-none" />
+                            <LanguageToggle className="flex-1 justify-center hover:bg-muted border-none shadow-none" />
                         </div>
-                        <div className="h-px bg-border/50 w-full" />
-                        <button className="flex items-center gap-3 px-4 py-2 text-foreground/80 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-lg transition-colors font-medium text-sm w-full group">
-                            <PiSignOut className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
-                            {t.sidebar.logout}
+
+                        <button className="flex items-center w-full p-2 text-foreground rounded-lg hover:bg-red-50 dark:hover:bg-red-900/10 hover:text-red-600 group transition-colors">
+                            <PiSignOut className="flex-shrink-0 w-5 h-5 text-muted-foreground transition duration-75 group-hover:text-red-600" aria-hidden="true" />
+                            <span className="flex-1 ms-3 whitespace-nowrap text-left text-sm font-medium">{t.sidebar.logout}</span>
                         </button>
                     </div>
                 </div>
             </aside>
 
-            {/* Overlay for mobile */}
+            {/* Overlay for Mobile */}
             {isOpen && (
                 <div
-                    className="fixed inset-0 bg-black/40 z-30 md:hidden backdrop-blur-[2px] animate-in fade-in"
+                    className="fixed inset-0 bg-black/50 z-[90] md:hidden"
                     onClick={() => setIsOpen(false)}
                 />
             )}
